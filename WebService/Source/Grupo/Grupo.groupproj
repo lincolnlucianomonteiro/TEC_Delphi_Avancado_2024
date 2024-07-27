@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{0D8B99F2-3338-467E-9FBB-2925394C9BD3}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="..\Projeto\Prj_WebService.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="..\Servidor\Projeto\WebService.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="Prj_WebService">
+        <MSBuild Projects="..\Projeto\Prj_WebService.dproj"/>
+    </Target>
+    <Target Name="Prj_WebService:Clean">
+        <MSBuild Projects="..\Projeto\Prj_WebService.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Prj_WebService:Make">
+        <MSBuild Projects="..\Projeto\Prj_WebService.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="WebService">
+        <MSBuild Projects="..\Servidor\Projeto\WebService.dproj"/>
+    </Target>
+    <Target Name="WebService:Clean">
+        <MSBuild Projects="..\Servidor\Projeto\WebService.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="WebService:Make">
+        <MSBuild Projects="..\Servidor\Projeto\WebService.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="Prj_WebService;WebService"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="Prj_WebService:Clean;WebService:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="Prj_WebService:Make;WebService:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
