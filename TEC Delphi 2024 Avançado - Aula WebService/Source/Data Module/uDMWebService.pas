@@ -7,6 +7,7 @@ uses
   Data.Bind.ObjectScope, REST.Client;
 
 type
+{$METHODINFO ON}
   TDMWebService = class(TDataModule)
     RESTClient: TRESTClient;
     RESTRequest: TRESTRequest;
@@ -14,6 +15,7 @@ type
   private
 
   end;
+{$METHODINFO OFF}
 
 implementation
 
