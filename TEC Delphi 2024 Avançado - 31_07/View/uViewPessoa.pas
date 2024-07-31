@@ -5,8 +5,9 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,
-  Vcl.ExtCtrls, Vcl.Buttons, Vcl.Mask, uModel.Constantes, uModel.Pessoa,
-  uModel.PessoaFisica, uModel.PessoaJuridica;
+  Vcl.ExtCtrls, Vcl.Buttons, Vcl.Mask, uModel.Constantes,
+
+  uAbstractFactoryPessoa;
 
 type
   TViewPessoa = class(TForm)
@@ -18,14 +19,39 @@ type
     procedure rdgOperacoesClick(Sender: TObject);
     procedure btnNomeCompletoClick(Sender: TObject);
     procedure btnFormatarDocumentoClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   private
-    fPessoaFisica   : TPessoaFisica;
-    fPessoaJuridica : TPessoaJuridica;
+    fAbstractFactoryPessoa : TAbstractFactoryPessoa;
+    procedure setDadosPessoaFisica;
+    procedure setDadosPessoaJuridica;
   end;
 
 implementation
 
 {$R *.dfm}
+
+procedure TViewPessoa.FormCreate(Sender: TObject);
+begin
+  fAbstractFactoryPessoa := TAbstractFactoryPessoa.Create;
+end;
+
+procedure TViewPessoa.FormDestroy(Sender: TObject);
+begin
+  fAbstractFactoryPessoa.Free;
+end;
+
+procedure TViewPessoa.setDadosPessoaFisica;
+begin
+  fAbstractFactoryPessoa.FactoryPessoaFisica.PessoaFisica.Nome := edtNome.Text;
+  fAbstractFactoryPessoa.FactoryPessoaFisica.PessoaFisica.CPF := edtDocumento.Text;
+end;
+
+procedure TViewPessoa.setDadosPessoaJuridica;
+begin
+  fAbstractFactoryPessoa.FactoryPessoaJuridica.PessoaJuridica.Nome := edtNome.Text;
+  fAbstractFactoryPessoa.FactoryPessoaJuridica.PessoaJuridica.CNPJ := edtDocumento.Text;
+end;
 
 procedure TViewPessoa.rdgOperacoesClick(Sender: TObject);
 begin
@@ -37,29 +63,15 @@ begin
   case rdgOperacoes.ItemIndex of
     0 :
     begin
-      fPessoaFisica      := TPessoaFisica.Create;
+      setDadosPessoaFisica;
 
-      try
-        fPessoaFisica.Nome := edtNome.Text;
-        fPessoaFisica.CPF  := edtDocumento.Text;
-
-        ShowMessage(fPessoaFisica.DadosCompletos);
-      finally
-        fPessoaFisica.Free;
-      end;
+      ShowMessage(fAbstractFactoryPessoa.FactoryPessoaFisica.PessoaFisica.DadosCompletos);
     end;
     1 :
     begin
-      fPessoaJuridica       := TPessoaJuridica.Create;
+      setDadosPessoaJuridica;
 
-      try
-        fPessoaJuridica.Nome  := edtNome.Text;
-        fPessoaJuridica.CNPJ  := edtDocumento.Text;
-
-        ShowMessage(fPessoaJuridica.DadosCompletos);
-      finally
-        fPessoaJuridica.Free;
-      end;
+      ShowMessage(fAbstractFactoryPessoa.FactoryPessoaJuridica.PessoaJuridica.DadosCompletos);
     end;
   end;
 end;
@@ -69,29 +81,15 @@ begin
   case rdgOperacoes.ItemIndex of
     0 :
     begin
-      fPessoaFisica      := TPessoaFisica.Create;
+      setDadosPessoaFisica;
 
-      try
-        fPessoaFisica.Nome := edtNome.Text;
-        fPessoaFisica.CPF  := edtDocumento.Text;
-
-        edtDocumento.Text := fPessoaFisica.FormatarDocumento;
-      finally
-        fPessoaFisica.Free;
-      end;
+      edtDocumento.Text := fAbstractFactoryPessoa.FactoryPessoaFisica.PessoaFisica.FormatarDocumento;
     end;
     1 :
     begin
-      fPessoaJuridica       := TPessoaJuridica.Create;
+      setDadosPessoaJuridica;
 
-      try
-        fPessoaJuridica.Nome  := edtNome.Text;
-        fPessoaJuridica.CNPJ  := edtDocumento.Text;
-
-        edtDocumento.Text := fPessoaJuridica.FormatarDocumento;
-      finally
-        fPessoaJuridica.Free;
-      end;
+      edtDocumento.Text := fAbstractFactoryPessoa.FactoryPessoaJuridica.PessoaJuridica.FormatarDocumento;
     end;
   end;
 end;

@@ -7,7 +7,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, uViewBase,
 
   uManagerForm, Vcl.StdCtrls, System.Actions, Vcl.ActnList, Vcl.ComCtrls,
-  uViewLogin, uModel.Constantes, Vcl.StdActns;
+  uViewLogin, uModel.Constantes, Vcl.StdActns, uUsuario;
 
 type
   TViewPrincipal = class(TViewBase)
@@ -55,20 +55,21 @@ procedure TViewPrincipal.FormCreate(Sender: TObject);
 begin
   TViewLogin.getInstancia.ShowModal;
 
-  if not TViewLogin.getInstancia.getLoginValido then
+  TViewLogin.getInstancia.setFreeInstancia;
+
+  if not TUsuario.getInstancia.LoginValido then
   begin
-    TViewLogin.getInstancia.setFreeInstancia;
     Application.Terminate;
     Exit;
   end;
 
-  StatusBar.Panels[0].Text := 'Usuário logado: ' + TViewLogin.getInstancia.edtUsuario.Text;
+  StatusBar.Panels[0].Text := 'Usuário logado: ' + TUsuario.getInstancia.Login;
   StatusBar.Panels[1].Text := 'Data atual: ' + FormatDateTime(C_MascaraData, Now);
 end;
 
 procedure TViewPrincipal.FormDestroy(Sender: TObject);
 begin
-  TViewLogin.getInstancia.setFreeInstancia;
+  TUsuario.getInstancia.setFreeInstancia;
 end;
 
 end.

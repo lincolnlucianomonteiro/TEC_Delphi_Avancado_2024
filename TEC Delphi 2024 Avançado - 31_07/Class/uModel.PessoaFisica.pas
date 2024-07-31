@@ -10,12 +10,8 @@ type
   TPessoaFisica = class(TPessoa)
   private
     fCPF : string;
-    fLista : TStringList;
     procedure setCPF(const Value: string);
   public
-    constructor Create;
-    destructor Destroy; override;
-
     property CPF : string read fCPF write setCPF;
     function FormatarDocumento : string; override;
     function DadosCompletos : string; override;
@@ -23,19 +19,9 @@ type
 
 implementation
 
-constructor TPessoaFisica.Create;
-begin
-  fLista := TStringList.Create;
-end;
-
 function TPessoaFisica.DadosCompletos: string;
 begin
   Result := Format('%s%s%s',[Nome, ' - ', FormatarDocumento]);
-end;
-
-destructor TPessoaFisica.Destroy;
-begin
-  FreeAndNil(fLista);
 end;
 
 function TPessoaFisica.FormatarDocumento: string;
