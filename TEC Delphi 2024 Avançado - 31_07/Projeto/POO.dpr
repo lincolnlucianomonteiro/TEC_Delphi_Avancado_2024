@@ -24,12 +24,7 @@ uses
   uSeresVivos in '..\Class\uSeresVivos.pas',
   uViewCadastroProdutos in '..\View\uViewCadastroProdutos.pas' {FormCadastroProdutos},
   uViewLogin in '..\View\uViewLogin.pas' {ViewLogin},
-  uUsuario in '..\Class\uUsuario.pas',
-  uFactoryPessoaFisica in '..\Class\Factory\uFactoryPessoaFisica.pas',
-  uFactoryPessoaJuridica in '..\Class\Factory\uFactoryPessoaJuridica.pas',
-  uAbstractFactoryPessoa in '..\Class\Factory\uAbstractFactoryPessoa.pas',
-  uFornecedor in '..\Class\uFornecedor.pas',
-  uFactoryFonecedor in '..\Class\Factory\uFactoryFonecedor.pas';
+  uUsuario in '..\Class\uUsuario.pas';
 
 {$R *.res}
 begin

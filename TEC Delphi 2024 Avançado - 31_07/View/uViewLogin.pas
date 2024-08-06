@@ -5,9 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uViewBase, Vcl.StdCtrls,
-  Vcl.ExtCtrls, Vcl.Buttons,
-
-  uUsuario;
+  Vcl.ExtCtrls, Vcl.Buttons, Vcl.Mask;
 
 type
   TViewLogin = class(TViewBase)
@@ -24,6 +22,7 @@ type
     constructor CreateNew(const pNew : Boolean = True); reintroduce;
   public
     constructor Create; reintroduce;
+    function getLoginValido : Boolean;
 
     class function getInstancia : TViewLogin;
     class procedure setFreeInstancia;
@@ -63,22 +62,28 @@ procedure TViewLogin.btnConfirmarClick(Sender: TObject);
 begin
   Self.ModalResult := mrNone;
 
-  TUsuario.getInstancia.Login := edtUsuario.Text;
-  TUsuario.getInstancia.Senha := edtSenha.Text;
+  if edtUsuario.Text = '' then
+    raise Exception.Create('O login do usuário é obrigatório.');
 
-  if TUsuario.getInstancia.LoginValido then
-    Self.ModalResult := mrOk;
+  if edtSenha.Text = '' then
+    raise Exception.Create('A senha do usuário é obrigatória.');
+
+  Self.ModalResult := mrOk;
 end;
 
 procedure TViewLogin.btnCancelarClick(Sender: TObject);
 begin
-  TUsuario.getInstancia.CancelarDados;
   Self.ModalResult := mrAbort;
 end;
 
 procedure TViewLogin.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   Action := caHide;
+end;
+
+function TViewLogin.getLoginValido: Boolean;
+begin
+  Result := (Self.ModalResult = mrOk) and (edtUsuario.Text <> '') and (edtSenha.Text <> '');
 end;
 
 end.
